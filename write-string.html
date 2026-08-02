@@ -1,0 +1,123 @@
+<script type="text/javascript">
+    RED.nodes.registerType('write-string',{
+        category: 'plc converter',
+        paletteLabel: 'write string converter',
+        color: '#cfa6bb', // Warna yang sama dengan node write
+        defaults: {
+            name: {value:""},
+            wordLength: {value: "2"},
+            endianness: {value: "BADC"},
+            targetLength: {value: 10}
+        },
+        inputs:1,
+        outputs:2,
+        outputLabels: ["Converted Array", "Error Message"],
+        icon: "font-awesome/fa-font",
+        label: function() {
+            return this.name || "write string converter";
+        },
+        oneditprepare: function() {
+            $("#node-input-wordLength").on("change", function() {
+                if ($(this).val() === "1") {
+                    $("#node-input-endianness").parent().hide();
+                } else {
+                    $("#node-input-endianness").parent().show();
+                }
+            });
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="write-string">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-wordLength"><i class="fa fa-text-width"></i> Word Length</label>
+        <select id="node-input-wordLength">
+            <option value="1">1 Word = 1 Character</option>
+            <option value="2">1 Word = 2 Characters</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-endianness"><i class="fa fa-exchange"></i> Byte/Word Order</label>
+        <select id="node-input-endianness">
+            <option value="BADC">String Normal (AB)</option>
+            <option value="ABCD">String Reverse (BA)</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-targetLength"><i class="fa fa-arrows-h"></i> Register Count</label>
+        <input type="number" id="node-input-targetLength" placeholder="Number of registers (e.g. 10)">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="write-string">
+    <h3>🇬🇧 English</h3>
+    <p>Converts an ASCII string into an array of Modbus registers (16-bit integers) for writing.</p>
+    
+    <h4>Inputs</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">string</span></dt>
+        <dd>The string to be converted into an array.</dd>
+    </dl>
+    
+    <h4>Options</h4>
+    <ul>
+        <li><b>Word Length</b>: Choose if each register should store 1 character or 2 characters.</li>
+        <li><b>String Direction</b>: Option to reverse the whole string before splitting into array.</li>
+        <li><b>Register Count</b>: The target number of registers. If the string is shorter, it will be padded with zeros. If it is longer, it will be truncated.</li>
+    </ul>
+
+    <h4>Outputs</h4>
+    <ol class="node-ports">
+        <li>Converted Array Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">array</span></dt>
+                <dd>An array of 16-bit integers ready to be sent to a Modbus Write node.</dd>
+            </dl>
+        </li>
+        <li>Error Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Error message if the conversion fails.</dd>
+            </dl>
+        </li>
+    </ol>
+    <hr>
+    
+    <h3>🇮🇩 Bahasa Indonesia</h3>
+    <p>Mengonversi teks/string ASCII menjadi array register Modbus (integer 16-bit) untuk ditulis ke PLC.</p>
+    
+    <h4>Input</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">string</span></dt>
+        <dd>Teks yang akan dikonversi menjadi array Modbus.</dd>
+    </dl>
+    
+    <h4>Pengaturan (Options)</h4>
+    <ul>
+        <li><b>Word Length</b>: Memilih apakah 1 register Modbus (1 word) diisi 1 karakter atau 2 karakter. Jika panjang teks ganjil pada mode 2 karakter, byte terakhir akan otomatis diisi dengan null (0).</li>
+        <li><b>String Direction</b>: Opsi untuk membalik arah string (Reverse) sebelum diubah ke array.</li>
+        <li><b>Register Count</b>: Menentukan jumlah register (panjang array) yang dikeluarkan. Jika teks lebih pendek, array akan diisi angka 0. Jika teks lebih panjang, teks akan dipotong sesuai batasan register ini. Biarkan kosong atau 0 jika ingin dinamis.</li>
+    </ul>
+    
+    <h4>Output</h4>
+    <ol class="node-ports">
+        <li>Output Array Berhasil
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">array</span></dt>
+                <dd>Array berisi nilai integer 16-bit, siap dikirim ke node Modbus Write Multiple Registers.</dd>
+            </dl>
+        </li>
+        <li>Output Error
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Pesan error jika konversi gagal.</dd>
+            </dl>
+        </li>
+    </ol>
+    <br>
+    <p style="text-align: right; font-size: 0.9em; font-style: italic; color: #888;">Powered by <b>Ismail Lookey</b></p>
+</script>

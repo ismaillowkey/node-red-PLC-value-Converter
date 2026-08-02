@@ -1,0 +1,117 @@
+<script type="text/javascript">
+    RED.nodes.registerType('value-converter',{
+        category: 'plc converter',
+        paletteLabel: 'plc converter',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            endianness: {value: "ABCD"},
+            targetType: {value: "int32"}
+        },
+        inputs:1,
+        outputs:2,
+        outputLabels: ["Converted Value", "Error Message"],
+        icon: "font-awesome/fa-exchange",
+        label: function() {
+            return this.name || "value-converter";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="value-converter">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-endianness"><i class="fa fa-random"></i> Endianness</label>
+        <select id="node-input-endianness">
+            <option value="ABCD">ABCD (Big Endian)</option>
+            <option value="CDAB">CDAB (Little Endian / Word Swap)</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-targetType"><i class="fa fa-cogs"></i> Convert To</label>
+        <select id="node-input-targetType">
+            <option value="int16">int16</option>
+            <option value="uint16">uint16</option>
+            <option value="int32">int32</option>
+            <option value="uint32">uint32</option>
+            <option value="int64">int64</option>
+            <option value="uint64">uint64</option>
+            <option value="float32">float32</option>
+            <option value="double64">double64</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="value-converter">
+    <h3>🇬🇧 English</h3>
+    <p>Converts an array of Modbus registers (16-bit integers) read from a PLC into specific numeric data types.</p>
+    
+    <h4>Inputs</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">array</span></dt>
+        <dd>An array of 16-bit integer values, usually coming from a Modbus Read node.</dd>
+    </dl>
+    
+    <h4>Data Types & Required Registers</h4>
+    <p>Depending on the target data type, the input array must contain a specific number of registers:</p>
+    <ul>
+        <li><b>int16 / uint16</b>: Requires <b>1</b> register in the array.</li>
+        <li><b>int32 / uint32 / float32</b>: Requires <b>2</b> registers in the array.</li>
+        <li><b>int64 / uint64 / double64</b>: Requires <b>4</b> registers in the array.</li>
+    </ul>
+    
+    <h4>Outputs</h4>
+    <ol class="node-ports">
+        <li>Converted Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">number</span></dt>
+                <dd>The successfully converted numeric value.</dd>
+            </dl>
+        </li>
+        <li>Error Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Error message if the conversion fails (e.g., the input array is shorter than required).</dd>
+            </dl>
+        </li>
+    </ol>
+    <hr>
+    
+    <h3>🇮🇩 Bahasa Indonesia</h3>
+    <p>Mengonversi array register Modbus (integer 16-bit) yang dibaca dari PLC menjadi tipe data numerik tertentu.</p>
+    
+    <h4>Input</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">array</span></dt>
+        <dd>Sebuah array berisi nilai integer 16-bit, biasanya didapat dari node Modbus Read.</dd>
+    </dl>
+    
+    <h4>Tipe Data & Kebutuhan Register</h4>
+    <p>Tergantung pada tipe data yang dipilih, array input harus memiliki jumlah register sebagai berikut:</p>
+    <ul>
+        <li><b>int16 / uint16</b>: Membutuhkan <b>1</b> register di dalam array.</li>
+        <li><b>int32 / uint32 / float32</b>: Membutuhkan <b>2</b> register di dalam array.</li>
+        <li><b>int64 / uint64 / double64</b>: Membutuhkan <b>4</b> register di dalam array.</li>
+    </ul>
+    
+    <h4>Output</h4>
+    <ol class="node-ports">
+        <li>Output Berhasil
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">number</span></dt>
+                <dd>Nilai numerik hasil konversi yang sukses.</dd>
+            </dl>
+        </li>
+        <li>Output Error
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Pesan error jika konversi gagal (misal: jumlah register di dalam array kurang dari yang dibutuhkan).</dd>
+            </dl>
+        </li>
+    </ol>
+    <br>
+    <p style="text-align: right; font-size: 0.9em; font-style: italic; color: #888;">Powered by <b>Ismail Lookey</b></p>
+</script>

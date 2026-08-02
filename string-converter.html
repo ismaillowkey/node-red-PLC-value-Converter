@@ -1,0 +1,124 @@
+<script type="text/javascript">
+    RED.nodes.registerType('string-converter',{
+        category: 'plc converter',
+        paletteLabel: 'string converter',
+        color: '#a6cfbb', // Warna hijau kebiruan agar beda
+        defaults: {
+            name: {value:""},
+            wordLength: {value: "2"}, // 1 or 2
+            endianness: {value: "BADC"},
+            trimNulls: {value: true}
+        },
+        inputs:1,
+        outputs:2,
+        outputLabels: ["Converted String", "Error Message"],
+        icon: "font-awesome/fa-font",
+        label: function() {
+            return this.name || "string converter";
+        },
+        oneditprepare: function() {
+            $("#node-input-wordLength").on("change", function() {
+                if ($(this).val() === "1") {
+                    $("#node-input-endianness").parent().hide();
+                } else {
+                    $("#node-input-endianness").parent().show();
+                }
+            });
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="string-converter">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-wordLength"><i class="fa fa-text-width"></i> Word Length</label>
+        <select id="node-input-wordLength">
+            <option value="1">1 Word = 1 Character</option>
+            <option value="2">1 Word = 2 Characters</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-endianness"><i class="fa fa-exchange"></i> Byte/Word Order</label>
+        <select id="node-input-endianness">
+            <option value="BADC">String Normal (AB)</option>
+            <option value="ABCD">String Reverse (BA)</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-trimNulls"><i class="fa fa-scissors"></i> Trim Nulls</label>
+        <input type="checkbox" id="node-input-trimNulls" style="display:inline-block; width:auto; vertical-align:top;">
+        <span style="font-size: 0.9em; margin-left: 5px;">Trim null characters (\x00) at start and end</span>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="string-converter">
+    <h3>🇬🇧 English</h3>
+    <p>Converts an array of Modbus registers (16-bit integers) into an ASCII string.</p>
+    
+    <h4>Inputs</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">array</span></dt>
+        <dd>An array of 16-bit integers to be converted into characters.</dd>
+    </dl>
+    
+    <h4>Options</h4>
+    <ul>
+        <li><b>Word Length</b>: Choose if each register contains 1 character or 2 characters.</li>
+        <li><b>String Direction</b>: Option to reverse the whole string.</li>
+        <li><b>Trim Nulls</b>: Automatically removes empty/null characters (<code>\x00</code>) at the beginning and end of the string.</li>
+    </ul>
+
+    <h4>Outputs</h4>
+    <ol class="node-ports">
+        <li>Converted Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>The decoded string.</dd>
+            </dl>
+        </li>
+        <li>Error Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Error message if the conversion fails.</dd>
+            </dl>
+        </li>
+    </ol>
+    <hr>
+    
+    <h3>🇮🇩 Bahasa Indonesia</h3>
+    <p>Mengonversi array register Modbus (integer 16-bit) menjadi teks/string ASCII.</p>
+    
+    <h4>Input</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">array</span></dt>
+        <dd>Array berisi nilai integer 16-bit yang akan dijadikan teks.</dd>
+    </dl>
+    
+    <h4>Pengaturan (Options)</h4>
+    <ul>
+        <li><b>Word Length</b>: Memilih apakah 1 register Modbus (1 word) dihitung sebagai 1 karakter atau 2 karakter.</li>
+        <li><b>String Direction</b>: Opsi untuk membalik arah string (Reverse) atau normal (Non Reverse).</li>
+        <li><b>Trim Nulls</b>: Menghapus karakter kosong/null (<code>\x00</code>) di bagian awal dan akhir string (umum terjadi pada pembacaan string di PLC).</li>
+    </ul>
+    
+    <h4>Output</h4>
+    <ol class="node-ports">
+        <li>Output Berhasil
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Hasil string dari konversi Modbus.</dd>
+            </dl>
+        </li>
+        <li>Output Error
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Pesan error jika input yang diberikan salah.</dd>
+            </dl>
+        </li>
+    </ol>
+    <br>
+    <p style="text-align: right; font-size: 0.9em; font-style: italic; color: #888;">Powered by <b>Ismail Lookey</b></p>
+</script>

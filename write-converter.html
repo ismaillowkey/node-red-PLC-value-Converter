@@ -1,0 +1,101 @@
+<script type="text/javascript">
+    RED.nodes.registerType('write-converter',{
+        category: 'plc converter',
+        paletteLabel: 'write plc converter',
+        color: '#cfa6bb', // Slightly different color from the read node
+        defaults: {
+            name: {value:""},
+            endianness: {value: "ABCD"},
+            sourceType: {value: "int32"}
+        },
+        inputs:1,
+        outputs:2,
+        outputLabels: ["Converted Array", "Error Message"],
+        icon: "font-awesome/fa-exchange",
+        label: function() {
+            return this.name || "write plc converter";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="write-converter">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-endianness"><i class="fa fa-random"></i> Endianness</label>
+        <select id="node-input-endianness">
+            <option value="ABCD">ABCD (Big Endian)</option>
+            <option value="CDAB">CDAB (Little Endian / Word Swap)</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-sourceType"><i class="fa fa-cogs"></i> Data Type</label>
+        <select id="node-input-sourceType">
+            <option value="int16">int16</option>
+            <option value="uint16">uint16</option>
+            <option value="int32">int32</option>
+            <option value="uint32">uint32</option>
+            <option value="int64">int64</option>
+            <option value="uint64">uint64</option>
+            <option value="float32">float32</option>
+            <option value="double64">double64</option>
+        </select>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="write-converter">
+    <h3>🇬🇧 English</h3>
+    <p>Converts a specific numeric data type into an array of Modbus registers (16-bit integers) for writing to a PLC.</p>
+    
+    <h4>Inputs</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">number</span></dt>
+        <dd>A numeric value to be converted.</dd>
+    </dl>
+    
+    <h4>Outputs</h4>
+    <ol class="node-ports">
+        <li>Converted Array Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">array</span></dt>
+                <dd>An array of 16-bit integers ready to be sent to a Modbus Write node.</dd>
+            </dl>
+        </li>
+        <li>Error Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Error message if the conversion fails.</dd>
+            </dl>
+        </li>
+    </ol>
+    <hr>
+    
+    <h3>🇮🇩 Bahasa Indonesia</h3>
+    <p>Mengonversi nilai tipe data numerik tertentu menjadi array register Modbus (integer 16-bit) untuk ditulis ke PLC.</p>
+    
+    <h4>Input</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">number</span></dt>
+        <dd>Nilai numerik yang akan dikonversi menjadi array Modbus.</dd>
+    </dl>
+    
+    <h4>Output</h4>
+    <ol class="node-ports">
+        <li>Output Array Berhasil
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">array</span></dt>
+                <dd>Array berisi nilai integer 16-bit, siap dikirim ke node Modbus Write Multiple Registers.</dd>
+            </dl>
+        </li>
+        <li>Output Error
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Pesan error jika konversi gagal (contoh input bukan berupa angka).</dd>
+            </dl>
+        </li>
+    </ol>
+    <br>
+    <p style="text-align: right; font-size: 0.9em; font-style: italic; color: #888;">Powered by <b>Ismail Lookey</b></p>
+</script>
