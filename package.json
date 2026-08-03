@@ -1,6 +1,6 @@
 {
   "name": "@ismaillowkey/plc-value-converter",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "description": "Node-RED node to convert an array of Modbus registers to specific value types",
   "main": "value-converter.js",
   "node-red": {
@@ -8,7 +8,10 @@
       "value-converter": "value-converter.js",
       "write-converter": "write-converter.js",
       "string-converter": "string-converter.js",
-      "write-string": "write-string.js"
+      "write-string": "write-string.js",
+      "timestamp-to-date": "timestamp-to-date.js",
+      "timestamp-ms-to-date": "timestamp-ms-to-date.js",
+      "date-to-timestamp": "date-to-timestamp.js"
     }
   },
   "keywords": [

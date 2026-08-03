@@ -52,6 +52,14 @@
         <input type="checkbox" id="node-input-trimNulls" style="display:inline-block; width:auto; vertical-align:top;">
         <span style="font-size: 0.9em; margin-left: 5px;">Trim null characters (\x00) at start and end</span>
     </div>
+    <div class="form-tips">
+        <b>Note:</b> Input should be an <b>array of 16-bit Modbus registers</b>.<br>
+        Output 1 will be a decoded <b>ASCII string</b>.<br>
+        <hr style="margin:5px 0;">
+        <b>Word Length Examples:</b><br>
+        • 1 Word = 1 Character : 1 register contains 1 letter (e.g. "A")<br>
+        • 1 Word = 2 Characters : 1 register contains 2 letters (e.g. "AB")
+    </div>
 </script>
 
 <script type="text/html" data-help-name="string-converter">

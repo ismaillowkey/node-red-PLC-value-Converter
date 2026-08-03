@@ -51,6 +51,14 @@
         <label for="node-input-targetLength"><i class="fa fa-arrows-h"></i> Register Count</label>
         <input type="number" id="node-input-targetLength" placeholder="Number of registers (e.g. 10)">
     </div>
+    <div class="form-tips">
+        <b>Note:</b> Input should be an <b>ASCII string</b>.<br>
+        Output 1 will be an <b>array of 16-bit Modbus registers</b>.<br>
+        <hr style="margin:5px 0;">
+        <b>Word Length Examples:</b><br>
+        • 1 Word = 1 Character : 1 register contains 1 letter (e.g. "A")<br>
+        • 1 Word = 2 Characters : 1 register contains 2 letters (e.g. "AB")
+    </div>
 </script>
 
 <script type="text/html" data-help-name="write-string">

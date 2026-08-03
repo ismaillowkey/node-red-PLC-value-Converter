@@ -1,0 +1,83 @@
+<script type="text/javascript">
+    RED.nodes.registerType('date-to-timestamp', {
+        category: 'plc converter',
+        color: '#E2D96E',
+        defaults: {
+            name: { value: "" }
+        },
+        inputs: 1,
+        outputs: 2,
+        outputLabels: ["Unix Timestamp (s)", "Error Message"],
+        icon: "font-awesome/fa-clock-o",
+        label: function() {
+            return this.name || "Date to Unix (s)";
+        },
+        paletteLabel: "Date to Unix (s)"
+    });
+</script>
+
+<script type="text/html" data-template-name="date-to-timestamp">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-tips">
+        <b>Note:</b> Input must be an array: <code>[Year, Month, Day, Hours, Minutes, Seconds]</code>.<br>
+        Output 1 will be a <b>Unix Timestamp (in seconds)</b>.
+    </div>
+</script>
+
+<script type="text/html" data-help-name="date-to-timestamp">
+    <h3>🇬🇧 English</h3>
+    <p>Converts a human-readable date array into a Unix timestamp (in seconds).</p>
+    
+    <h4>Inputs</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">array</span></dt>
+        <dd>An array of 6 numbers: <code>[Year, Month, Day, Hours, Minutes, Seconds]</code>.</dd>
+    </dl>
+    
+    <h4>Outputs</h4>
+    <ol class="node-ports">
+        <li>Success Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">number</span></dt>
+                <dd>The Unix timestamp in seconds.</dd>
+            </dl>
+        </li>
+        <li>Error Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Error message if the conversion fails (e.g., input is not an array of 6 numbers).</dd>
+            </dl>
+        </li>
+    </ol>
+    <hr>
+    
+    <h3>🇮🇩 Bahasa Indonesia</h3>
+    <p>Mengonversi array tanggal menjadi Unix timestamp (dalam detik).</p>
+    
+    <h4>Input</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">array</span></dt>
+        <dd>Sebuah array yang berisi 6 angka: <code>[Tahun, Bulan, Tanggal, Jam, Menit, Detik]</code>.</dd>
+    </dl>
+    
+    <h4>Output</h4>
+    <ol class="node-ports">
+        <li>Output Berhasil
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">angka</span></dt>
+                <dd>Unix timestamp dalam format detik.</dd>
+            </dl>
+        </li>
+        <li>Output Error
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Pesan error jika konversi gagal dilakukan (misal: input bukan berupa array berisi 6 angka).</dd>
+            </dl>
+        </li>
+    </ol>
+    <br>
+    <p style="text-align: right; font-size: 0.9em; font-style: italic; color: #888;">Powered by <b>Ismail Lookey</b></p>
+</script>

@@ -43,6 +43,15 @@
             <option value="double64">double64</option>
         </select>
     </div>
+    <div class="form-tips">
+        <b>Note:</b> Input should be an <b>array of 16-bit Modbus registers</b>.<br>
+        Output 1 will be a converted <b>numeric value</b>.<br>
+        <hr style="margin:5px 0;">
+        <b>Registers Needed:</b><br>
+        • int16 / uint16 : <b>1 register</b> (1 array length)<br>
+        • int32 / uint32 / float32 : <b>2 registers</b> (2 array length)<br>
+        • int64 / uint64 / double64 : <b>4 registers</b> (4 array length)
+    </div>
 </script>
 
 <script type="text/html" data-help-name="value-converter">
