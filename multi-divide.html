@@ -1,0 +1,99 @@
+<script type="text/javascript">
+    RED.nodes.registerType('multi-divide',{
+        category: 'plc converter',
+        paletteLabel: 'multi divide',
+        color: '#e2b4cf',
+        defaults: {
+            name: {value:""},
+            divisor: {value: 10, required: true, validate: RED.validators.number()}
+        },
+        inputs:1,
+        outputs:2,
+        outputLabels: ["Divided Array", "Error Message"],
+        icon: "font-awesome/fa-calculator",
+        label: function() {
+            return this.name || "multi-divide";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="multi-divide">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-divisor"><i class="fa fa-calculator"></i> Divisor</label>
+        <input type="number" id="node-input-divisor" placeholder="10" step="any">
+    </div>
+    <div class="form-tips">
+        <b>🇬🇧 English:</b> Input <code>msg.payload</code> must be an array of numbers. Output 1 will be an array where each element is divided by the divisor.<br>
+        <hr style="margin: 5px 0;">
+        <b>🇮🇩 Indonesia:</b> Input <code>msg.payload</code> harus berupa array berisi angka. Output 1 akan berupa array yang setiap elemennya dibagi dengan divisor.
+    </div>
+</script>
+
+<script type="text/html" data-help-name="multi-divide">
+    <h3>🇬🇧 English</h3>
+    <p>Divides each numeric element inside the <code>msg.payload</code> array by the configured divisor (e.g. for scaling arrays of Modbus values).</p>
+    
+    <h4>Inputs</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">array</span></dt>
+        <dd>An array of numbers to divide (e.g. <code>[2345, 6780]</code>).</dd>
+    </dl>
+    
+    <h4>Options</h4>
+    <ul>
+        <li><b>Divisor</b>: The number to divide each element by (e.g. <code>10</code> to convert <code>[2345, 6780]</code> into <code>[234.5, 678.0]</code>).</li>
+    </ul>
+
+    <h4>Outputs</h4>
+    <ol class="node-ports">
+        <li>Divided Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">array</span></dt>
+                <dd>An array of division results.</dd>
+            </dl>
+        </li>
+        <li>Error Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Error message if the input payload is not a valid array, or contains non-numeric values.</dd>
+            </dl>
+        </li>
+    </ol>
+    <hr>
+    
+    <h3>🇮🇩 Bahasa Indonesia</h3>
+    <p>Membagi setiap elemen angka di dalam array <code>msg.payload</code> dengan angka pembagi yang ditentukan (misalnya untuk mengubah array register PLC Modbus hasil pembacaan kelompok menjadi array nilai desimal asli).</p>
+    
+    <h4>Input</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">array</span></dt>
+        <dd>Array berisi nilai angka yang akan dibagi (contoh: <code>[2345, 6780]</code>).</dd>
+    </dl>
+    
+    <h4>Pengaturan</h4>
+    <ul>
+        <li><b>Divisor</b>: Nilai pembagi (contoh: isi <code>10</code> untuk membagi <code>[2345, 6780]</code> menjadi <code>[234.5, 678.0]</code>).</li>
+    </ul>
+    
+    <h4>Output</h4>
+    <ol class="node-ports">
+        <li>Output Berhasil
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">array</span></dt>
+                <dd>Array berisi nilai-nilai hasil pembagian.</dd>
+            </dl>
+        </li>
+        <li>Output Error
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Pesan error jika input bukan berupa array atau ada elemen di dalamnya yang bukan angka valid.</dd>
+            </dl>
+        </li>
+    </ol>
+    <br>
+    <p style="text-align: right; font-size: 0.9em; font-style: italic; color: #888;">Powered by <b>Ismail Lookey</b></p>
+</script>

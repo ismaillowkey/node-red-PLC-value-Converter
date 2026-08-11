@@ -1,0 +1,222 @@
+<script type="text/javascript">
+    RED.nodes.registerType('multi-value-converter',{
+        category: 'plc converter',
+        paletteLabel: 'multi value converter',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            endianness: {value: "ABCD"},
+            targetType: {value: "int32"},
+            length: {value: 1},
+            decimalMode: {value: "none"},
+            roundDecimals: {value: 1}
+        },
+        inputs:1,
+        outputs:2,
+        outputLabels: ["Converted Array", "Error Message"],
+        icon: "font-awesome/fa-exchange",
+        label: function() {
+            return this.name || "multi-value-converter";
+        },
+        oneditprepare: function() {
+            function updateTips() {
+                var targetType = $("#node-input-targetType").val();
+                var lengthVal = $("#node-input-length").val();
+                var length = parseInt(lengthVal) || 1;
+                if (length < 1) {
+                    length = 1;
+                }
+                
+                var regPerVal = 1;
+                switch(targetType) {
+                    case "int16":
+                    case "uint16":
+                        regPerVal = 1;
+                        break;
+                    case "int32":
+                    case "uint32":
+                    case "float32":
+                        regPerVal = 2;
+                        break;
+                    case "int64":
+                    case "uint64":
+                    case "double64":
+                        regPerVal = 4;
+                        break;
+                }
+                
+                var total = regPerVal * length;
+                $("#dynamic-tips-count").text(total);
+                $("#dynamic-tips-len").text(length);
+                $("#dynamic-tips-type").text(targetType);
+                $("#dynamic-tips-count-id").text(total);
+                $("#dynamic-tips-len-id").text(length);
+                $("#dynamic-tips-type-id").text(targetType);
+            }
+            
+            function updateVisibility() {
+                var targetType = $("#node-input-targetType").val();
+                var decimalMode = $("#node-input-decimalMode").val();
+                
+                if (targetType === "int16" || targetType === "uint16") {
+                    $("#endianness-row").hide();
+                } else {
+                    $("#endianness-row").show();
+                }
+                
+                if (targetType === "float32" || targetType === "double64") {
+                    $("#decimalMode-row").show();
+                    if (decimalMode === "round") {
+                        $("#roundDecimals-row").show();
+                    } else {
+                        $("#roundDecimals-row").hide();
+                    }
+                } else {
+                    $("#decimalMode-row").hide();
+                    $("#roundDecimals-row").hide();
+                }
+                updateTips();
+            }
+            
+            $("#node-input-targetType").on("change", updateVisibility);
+            $("#node-input-decimalMode").on("change", updateVisibility);
+            $("#node-input-length").on("change keyup input", updateTips);
+            
+            updateVisibility();
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="multi-value-converter">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row" id="endianness-row">
+        <label for="node-input-endianness"><i class="fa fa-random"></i> Endianness</label>
+        <select id="node-input-endianness">
+            <option value="ABCD">ABCD (Big Endian)</option>
+            <option value="CDAB">CDAB (Little Endian / Word Swap)</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-targetType"><i class="fa fa-cogs"></i> Convert To</label>
+        <select id="node-input-targetType">
+            <option value="int16">int16</option>
+            <option value="uint16">uint16</option>
+            <option value="int32">int32</option>
+            <option value="uint32">uint32</option>
+            <option value="int64">int64</option>
+            <option value="uint64">uint64</option>
+            <option value="float32">float32</option>
+            <option value="double64">double64</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-length"><i class="fa fa-arrows-h"></i> Length</label>
+        <input type="number" id="node-input-length" placeholder="Number of values (e.g. 1)" min="1">
+    </div>
+    <div class="form-row" id="decimalMode-row">
+        <label for="node-input-decimalMode"><i class="fa fa-calculator"></i> Decimals</label>
+        <select id="node-input-decimalMode">
+            <option value="none">Keep Original Precision</option>
+            <option value="round">Limit Decimal Places</option>
+        </select>
+    </div>
+    <div class="form-row" id="roundDecimals-row">
+        <label for="node-input-roundDecimals"><i class="fa fa-sort-numeric-asc"></i> Decimal Places</label>
+        <input type="number" id="node-input-roundDecimals" placeholder="e.g. 2" min="0">
+    </div>
+    <div class="form-tips">
+        <b>🇬🇧 English:</b> Input should be an array of 16-bit Modbus registers. Output 1 will be an array of converted values.<br>
+        <span style="color:#d9534f; font-weight:bold;">Requirement:</span> Input msg.payload must be an array with at least <span id="dynamic-tips-count" style="font-weight:bold; color:#d9534f;">2</span> elements (registers) to convert <span id="dynamic-tips-len" style="font-weight:bold;">1</span> x <span id="dynamic-tips-type" style="font-weight:bold;">int32</span> values.<br>
+        <hr style="margin:5px 0;">
+        <b>🇮🇩 Indonesia:</b> Input harus berupa array register Modbus 16-bit. Output 1 berupa array hasil konversi.<br>
+        <span style="color:#d9534f; font-weight:bold;">Kebutuhan:</span> Input msg.payload harus berupa array dengan minimal <span id="dynamic-tips-count-id" style="font-weight:bold; color:#d9534f;">2</span> elemen (register) untuk mengonversi <span id="dynamic-tips-len-id" style="font-weight:bold;">1</span> x nilai <span id="dynamic-tips-type-id" style="font-weight:bold;">int32</span>.
+    </div>
+</script>
+
+<script type="text/html" data-help-name="multi-value-converter">
+    <h3>🇬🇧 English</h3>
+    <p>Converts a single large array of Modbus registers (16-bit integers) read from a PLC into an array of numeric data types.</p>
+    
+    <h4>Inputs</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">array</span></dt>
+        <dd>An array of 16-bit integer values containing consecutive registers for multiple values.</dd>
+    </dl>
+    
+    <h4>Options</h4>
+    <ul>
+        <li><b>Convert To</b>: The target numeric data type for each value.</li>
+        <li><b>Length</b>: The number of values to extract and convert.</li>
+        <li><b>Decimals</b>: Option to limit float/double precision (Keep Original Precision or Limit Decimal Places).</li>
+        <li><b>Decimal Places</b>: Number of digits to keep after the decimal point when limiting precision.</li>
+    </ul>
+
+    <h4>Data Types & Required Registers per Value</h4>
+    <ul>
+        <li><b>int16 / uint16</b>: Requires <b>1</b> register per value.</li>
+        <li><b>int32 / uint32 / float32</b>: Requires <b>2</b> registers per value.</li>
+        <li><b>int64 / uint64 / double64</b>: Requires <b>4</b> registers per value.</li>
+    </ul>
+    
+    <h4>Outputs</h4>
+    <ol class="node-ports">
+        <li>Converted Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">array</span></dt>
+                <dd>An array containing the successfully converted numeric values.</dd>
+            </dl>
+        </li>
+        <li>Error Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Error message if the conversion fails (e.g. input array is shorter than <code>Length * Registers per Value</code>).</dd>
+            </dl>
+        </li>
+    </ol>
+    <hr>
+    
+    <h3>🇮🇩 Bahasa Indonesia</h3>
+    <p>Mengonversi satu array besar register Modbus (integer 16-bit) dari PLC menjadi sebuah array berisi beberapa nilai tipe data numerik.</p>
+    
+    <h4>Input</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">array</span></dt>
+        <dd>Sebuah array berisi nilai integer 16-bit yang menyimpan register berurutan untuk beberapa nilai sekaligus.</dd>
+    </dl>
+    
+    <h4>Pengaturan</h4>
+    <ul>
+        <li><b>Convert To</b>: Tipe data numerik target untuk setiap nilai.</li>
+        <li><b>Length</b>: Jumlah nilai yang ingin diekstrak dan dikonversi.</li>
+        <li><b>Decimals</b>: Pilihan untuk membatasi presisi nilai desimal (Presisi Asli atau Batasi Digit Desimal).</li>
+        <li><b>Decimal Places</b>: Jumlah angka di belakang koma saat membatasi presisi.</li>
+    </ul>
+    
+    <h4>Tipe Data & Kebutuhan Register per Nilai</h4>
+    <ul>
+        <li><b>int16 / uint16</b>: Membutuhkan <b>1</b> register per nilai.</li>
+        <li><b>int32 / uint32 / float32</b>: Membutuhkan <b>2</b> register per nilai.</li>
+        <li><b>int64 / uint64 / double64</b>: Membutuhkan <b>4</b> register per nilai.</li>
+    </ul>
+    
+    <h4>Output</h4>
+    <ol class="node-ports">
+        <li>Output Berhasil
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">array</span></dt>
+                <dd>Sebuah array berisi nilai-nilai numerik hasil konversi.</dd>
+            </dl>
+        </li>
+        <li>Output Error
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Pesan error jika konversi gagal (misal: jumlah register di dalam array kurang dari <code>Length * Register per Nilai</code>).</dd>
+            </dl>
+        </li>
+    </ol>
+    <br>
+    <p style="text-align: right; font-size: 0.9em; font-style: italic; color: #888;">Powered by <b>Ismail Lookey</b></p>
+</script>

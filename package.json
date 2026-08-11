@@ -1,11 +1,14 @@
 {
   "name": "@ismaillowkey/plc-value-converter",
-  "version": "0.4.1",
+  "version": "0.5.2",
   "description": "Node-RED node to convert an array of Modbus registers to specific value types",
   "main": "value-converter.js",
   "node-red": {
     "nodes": {
       "value-converter": "value-converter.js",
+      "multi-value-converter": "multi-value-converter.js",
+      "single-divide": "single-divide.js",
+      "multi-divide": "multi-divide.js",
       "write-converter": "write-converter.js",
       "string-converter": "string-converter.js",
       "write-string": "write-string.js",
@@ -21,5 +24,13 @@
     "plc"
   ],
   "author": "Ismail Lookey",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ismaillowkey/node-red-PLC-value-Converter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ismaillowkey/node-red-PLC-value-Converter/issues"
+  },
+  "homepage": "https://github.com/ismaillowkey/node-red-PLC-value-Converter#readme"
 }

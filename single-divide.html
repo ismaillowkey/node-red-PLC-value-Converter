@@ -1,0 +1,99 @@
+<script type="text/javascript">
+    RED.nodes.registerType('single-divide',{
+        category: 'plc converter',
+        paletteLabel: 'single divide',
+        color: '#e2b4cf',
+        defaults: {
+            name: {value:""},
+            divisor: {value: 10, required: true, validate: RED.validators.number()}
+        },
+        inputs:1,
+        outputs:2,
+        outputLabels: ["Divided Value", "Error Message"],
+        icon: "font-awesome/fa-calculator",
+        label: function() {
+            return this.name || "single divide";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="single-divide">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-divisor"><i class="fa fa-calculator"></i> Divisor</label>
+        <input type="number" id="node-input-divisor" placeholder="10" step="any">
+    </div>
+    <div class="form-tips">
+        <b>🇬🇧 English:</b> Input <code>msg.payload</code> must be a single number. Output 1 will be <code>payload / divisor</code>.<br>
+        <hr style="margin: 5px 0;">
+        <b>🇮🇩 Indonesia:</b> Input <code>msg.payload</code> harus berupa angka tunggal. Output 1 akan bernilai <code>payload / divisor</code>.
+    </div>
+</script>
+
+<script type="text/html" data-help-name="single-divide">
+    <h3>🇬🇧 English</h3>
+    <p>Divides a single numeric value in <code>msg.payload</code> by the configured divisor (e.g. for scaling Modbus integers into floats).</p>
+    
+    <h4>Inputs</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">number</span></dt>
+        <dd>The numeric value to divide (e.g. <code>2345</code>).</dd>
+    </dl>
+    
+    <h4>Options</h4>
+    <ul>
+        <li><b>Divisor</b>: The number to divide the input by (e.g. <code>10</code> to convert <code>2345</code> into <code>234.5</code>).</li>
+    </ul>
+
+    <h4>Outputs</h4>
+    <ol class="node-ports">
+        <li>Divided Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">number</span></dt>
+                <dd>The division result.</dd>
+            </dl>
+        </li>
+        <li>Error Output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Error message if the input payload is not a valid number.</dd>
+            </dl>
+        </li>
+    </ol>
+    <hr>
+    
+    <h3>🇮🇩 Bahasa Indonesia</h3>
+    <p>Membagi nilai numerik tunggal di <code>msg.payload</code> dengan angka pembagi yang ditentukan (misalnya untuk mengubah integer PLC hasil pembacaan Modbus menjadi nilai desimal asli).</p>
+    
+    <h4>Input</h4>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">number</span></dt>
+        <dd>Nilai numerik yang akan dibagi (contoh: <code>2345</code>).</dd>
+    </dl>
+    
+    <h4>Pengaturan</h4>
+    <ul>
+        <li><b>Divisor</b>: Nilai pembagi (contoh: isi <code>10</code> untuk membagi <code>2345</code> menjadi <code>234.5</code>).</li>
+    </ul>
+    
+    <h4>Output</h4>
+    <ol class="node-ports">
+        <li>Output Berhasil
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">number</span></dt>
+                <dd>Nilai hasil pembagian.</dd>
+            </dl>
+        </li>
+        <li>Output Error
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>Pesan error jika input yang diberikan bukan berupa angka yang valid.</dd>
+            </dl>
+        </li>
+    </ol>
+    <br>
+    <p style="text-align: right; font-size: 0.9em; font-style: italic; color: #888;">Powered by <b>Ismail Lookey</b></p>
+</script>

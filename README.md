@@ -12,13 +12,16 @@ A Node-RED custom node designed to seamlessly convert Modbus 16-bit register arr
 > This node is designed as an add-on / companion to be used alongside the **[node-red-contrib-modbus](https://flows.nodered.org/node/node-red-contrib-modbus)** library.
 
 ### Nodes Included:
-1. **PLC Value Converter**: Reads an array of 16-bit registers (e.g., from a Modbus Read node) and converts them into numeric values (Float, Int, Uint).
-2. **PLC Write Converter**: Converts numeric values back into an array of 16-bit registers to be written into a PLC (e.g., via a Modbus Write node).
-3. **String Converter**: Reads an array of 16-bit registers and converts them into ASCII strings (supports Normal and Reverse byte ordering).
-4. **Write String Converter**: Converts an ASCII string into an array of 16-bit registers to be written to a PLC.
-5. **Unix (s) to Date**: Converts a Unix timestamp (seconds) into a date array `[Year, Month, Day, Hour, Minute, Second]`.
-6. **Unix (ms) to Date**: Converts a Unix timestamp (milliseconds) into a date array `[Year, Month, Day, Hour, Minute, Second, Millisecond]`.
-7. **Date to Unix (s)**: Converts a date array `[Year, Month, Day, Hour, Minute, Second]` into a Unix timestamp (seconds).
+1. **PLC Value Converter**: Reads an array of 16-bit registers (e.g., from a Modbus Read node) and converts them into numeric values (Float, Int, Uint). Supports optional decimal rounding options for float values and automatically hides the Endianness dropdown for 16-bit types.
+2. **PLC Multi Value Converter**: Converts a single large array of Modbus registers into an array of multiple numeric values. Supports dynamic length configuration, dynamic UI visibility, and decimal rounding.
+3. **Single Divide**: Scales down/divides a single numeric value in `msg.payload` by a configured divisor (e.g., divide by `10`).
+4. **Multi Divide**: Scales down/divides each element in an array of numbers in `msg.payload` by a configured divisor (e.g., divide by `10`).
+5. **PLC Write Converter**: Converts numeric values back into an array of 16-bit registers to be written into a PLC (e.g., via a Modbus Write node).
+6. **String Converter**: Reads an array of 16-bit registers and converts them into ASCII strings (supports Normal and Reverse byte ordering).
+7. **Write String Converter**: Converts an ASCII string into an array of 16-bit registers to be written to a PLC.
+8. **Unix (s) to Date**: Converts a Unix timestamp (seconds) into a date array `[Year, Month, Day, Hour, Minute, Second]`.
+9. **Unix (ms) to Date**: Converts a Unix timestamp (milliseconds) into a date array `[Year, Month, Day, Hour, Minute, Second, Millisecond]`.
+10. **Date to Unix (s)**: Converts a date array `[Year, Month, Day, Hour, Minute, Second]` into a Unix timestamp (seconds).
 
 ### How Many Registers (Array Length) Are Needed?
 When reading or writing from Modbus, data types require different amounts of 16-bit registers:
@@ -45,13 +48,16 @@ Sebuah custom node Node-RED yang dirancang untuk mempermudah konversi array regi
 > Node ini adalah tambahan (add-on) pendamping yang dirancang khusus untuk digunakan bersama dengan library utama **[node-red-contrib-modbus](https://flows.nodered.org/node/node-red-contrib-modbus)**.
 
 ### Node yang Tersedia:
-1. **PLC Value Converter**: Membaca array dari register 16-bit (contohnya dari node Modbus Read) dan mengkonversinya menjadi angka numerik (Float, Int, Uint).
-2. **PLC Write Converter**: Mengkonversi angka numerik kembali menjadi array register 16-bit untuk ditulis ke PLC (contohnya melalui node Modbus Write).
-3. **String Converter**: Membaca array dari register 16-bit dan mengubahnya menjadi teks/string ASCII (mendukung pertukaran byte/huruf Normal dan Reverse).
-4. **Write String Converter**: Mengubah teks/string ASCII menjadi array register 16-bit untuk ditulis ke PLC.
-5. **Unix (s) to Date**: Mengonversi Unix timestamp (detik) menjadi array tanggal `[Tahun, Bulan, Tanggal, Jam, Menit, Detik]`.
-6. **Unix (ms) to Date**: Mengonversi Unix timestamp (milidetik) menjadi array tanggal `[Tahun, Bulan, Tanggal, Jam, Menit, Detik, Milidetik]`.
-7. **Date to Unix (s)**: Mengonversi array tanggal `[Tahun, Bulan, Tanggal, Jam, Menit, Detik]` menjadi Unix timestamp (detik).
+1. **PLC Value Converter**: Membaca array dari register 16-bit (contohnya dari node Modbus Read) dan mengkonversinya menjadi angka numerik (Float, Int, Uint). Mendukung opsi pembulatan desimal untuk tipe float dan secara otomatis menyembunyikan dropdown Endianness jika tipe data 16-bit dipilih.
+2. **PLC Multi Value Converter**: Mengonversi satu array besar register Modbus menjadi sebuah array berisi beberapa nilai tipe data numerik sekaligus. Mendukung pengaturan panjang dinamis, pembulatan desimal, dan penyembunyian otomatis input UI yang tidak relevan.
+3. **Single Divide**: Membagi nilai angka tunggal di `msg.payload` dengan angka pembagi yang ditentukan (contoh: dibagi `10` untuk mengubah `2345` menjadi `234.5`).
+4. **Multi Divide**: Membagi setiap elemen angka di dalam array `msg.payload` dengan angka pembagi yang ditentukan (contoh: dibagi `10` untuk mengubah `[2345, 6780]` menjadi `[234.5, 678.0]`).
+5. **PLC Write Converter**: Mengkonversi angka numerik kembali menjadi array register 16-bit untuk ditulis ke PLC (contohnya melalui node Modbus Write).
+6. **String Converter**: Membaca array dari register 16-bit dan mengubahnya menjadi teks/string ASCII (mendukung pertukaran byte/huruf Normal dan Reverse).
+7. **Write String Converter**: Mengubah teks/string ASCII menjadi array register 16-bit untuk ditulis ke PLC.
+8. **Unix (s) to Date**: Mengonversi Unix timestamp (detik) menjadi array tanggal `[Tahun, Bulan, Tanggal, Jam, Menit, Detik]`.
+9. **Unix (ms) to Date**: Mengonversi Unix timestamp (milidetik) menjadi array tanggal `[Tahun, Bulan, Tanggal, Jam, Menit, Detik, Milidetik]`.
+10. **Date to Unix (s)**: Mengonversi array tanggal `[Tahun, Bulan, Tanggal, Jam, Menit, Detik]` menjadi Unix timestamp (detik).
 
 ### Berapa Jumlah Register (Array) yang Dibutuhkan?
 Saat membaca atau menulis dari Modbus, tipe data yang berbeda membutuhkan jumlah register 16-bit yang berbeda pula:
